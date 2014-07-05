@@ -1,0 +1,42 @@
+#! /usr/bin/env ruby
+
+# encoding: utf-8
+
+require 'socket'
+require 'eventmachine'
+
+$who = ARGV[0]
+
+def send_imessage data
+  `irepl-send #{$who} #{data}`
+end
+
+Thread.new do
+  loop do
+    init
+    input = STDIN.gets.chomp
+    send_imessage input
+  end
+end
+
+def init
+    print "\nto #{$who}>"
+end
+
+module REPLServer
+  def post_init
+  end
+
+  def receive_data data
+    puts "\n"+data.split("\n").join(": ")
+    init
+  end
+
+  def unbind
+  end
+end
+
+EventMachine::run do
+  EventMachine::start_unix_domain_server '/tmp/irepl.sock', REPLServer
+end
+

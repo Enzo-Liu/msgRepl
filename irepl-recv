@@ -1,0 +1,17 @@
+#! /usr/bin/env ruby
+
+data = STDIN.read
+sender = ARGV[0]
+
+#`say sender`
+
+require 'socket'
+
+begin
+  UNIXSocket.open('/tmp/irepl.sock') do |socket|
+    socket.puts(sender)
+    socket.puts(data)
+  end
+rescue
+  nil
+end

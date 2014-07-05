@@ -1,0 +1,3 @@
+#! /usr/bin/env ruby
+
+`osascript ~/bin/imsg-send.scpt '#{ARGV[0]}' '#{ARGV[1]}'`
